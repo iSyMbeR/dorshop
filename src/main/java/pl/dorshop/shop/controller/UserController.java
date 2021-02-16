@@ -12,7 +12,6 @@ import pl.dorshop.shop.model.UserType;
 import pl.dorshop.shop.service.UserService;
 
 import java.util.List;
-import java.util.Random;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,18 +23,20 @@ public class UserController {
     public List<User> getUsers() {
         return userService.getUsers();
     }
+
     @GetMapping("/users/random")
-    public void addRandomUser(){
+    public String addRandomUser() {
         User user = User.builder()
-                .userType(UserType.ADMIN)
+                .userType(UserType.NORMAL_USER)
                 .password(RandomString.make(15))
                 .address(RandomString.make(20))
                 .lastName(RandomString.make(20))
                 .firstName(RandomString.make(20))
                 .phone("513-431-241")
-                .email(RandomString.make(10)+"@gmail.com")
+                .email(RandomString.make(10) + "@gmail.com")
                 .build();
         userService.addUser(user);
+        return "User " + user.toString() + "added successfully to database";
     }
 
     @GetMapping("/users/{page}/{sort}")
@@ -55,6 +56,11 @@ public class UserController {
         } catch (DataIntegrityViolationException e) {
             log.info("User with that mail already exist");
         }
+    }
+
+    @DeleteMapping("/users")
+    public void deleteUser(@RequestParam String email) {
+        userService.deleteUserByEmail(email);
     }
 
 //    @GetMapping("/users/search/{login}/{password}")

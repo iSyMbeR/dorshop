@@ -5,5 +5,5 @@ import javax.persistence.Enumerated;
 import javax.persistence.Id;
 
 public enum UserType {
-    NORMAL_USER, ADMIN, EMPLOYEE;
+    NORMAL_USER, ADMIN, MODERATOR;
 }
